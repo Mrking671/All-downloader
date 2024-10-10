@@ -9,12 +9,23 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
         if (data.status) {
             const videoPlayer = document.getElementById('videoPlayer');
             const downloadLink = document.getElementById('downloadLink');
+            const thumbnail = document.getElementById('thumbnail');
             const result = document.getElementById('result');
 
+            // Set the video source
             videoPlayer.src = data.data.video;
+            videoPlayer.load(); // Load the new video source
+
+            // Set the download link
             downloadLink.href = data.data.video;
 
+            // Set the thumbnail image source
+            thumbnail.src = data.data.image;
+
+            // Make elements visible
             result.classList.remove('hidden');
+            downloadLink.classList.remove('hidden');
+            thumbnail.classList.remove('hidden');
         } else {
             alert('Error fetching video. Please check the link and try again.');
         }
