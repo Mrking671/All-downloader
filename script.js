@@ -2,6 +2,7 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
     const videoLink = document.getElementById('videoLink').value.trim();
     const apiUrl = `https://tele-social.vercel.app/down?url=${encodeURIComponent(videoLink)}`;
 
+    // Ensure the user has entered a valid video URL
     if (!videoLink) {
         alert('Please enter a valid video URL.');
         return;
@@ -9,7 +10,7 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
 
     try {
         const response = await fetch(apiUrl);
-        
+
         // Check if the response is OK (status in the range 200-299)
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -17,6 +18,7 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
 
         const data = await response.json();
 
+        // Check if the status in the API response is true
         if (data.status) {
             const videoPlayer = document.getElementById('videoPlayer');
             const downloadLink = document.getElementById('downloadLink');
