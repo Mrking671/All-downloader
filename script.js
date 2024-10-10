@@ -1,6 +1,8 @@
 document.getElementById('downloadButton').addEventListener('click', async () => {
     const videoLink = document.getElementById('videoLink').value.trim();
-    const apiUrl = `https://tele-social.vercel.app/down?url=${encodeURIComponent(videoLink)}`;
+    
+    // Using a CORS proxy for testing
+    const apiUrl = `https://cors-anywhere.herokuapp.com/https://tele-social.vercel.app/down?url=${encodeURIComponent(videoLink)}`;
 
     // Ensure the user has entered a valid video URL
     if (!videoLink) {
