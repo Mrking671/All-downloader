@@ -10,11 +10,14 @@
     <div class="container">
         <h1>Video Downloader</h1>
         <input type="text" id="videoLink" placeholder="Enter video link" required>
-        <button id="downloadButton">Download Video</button>
+        <button id="downloadButton">Get Video</button>
+        
         <div id="result" class="hidden">
             <h2>Video Player</h2>
             <video id="videoPlayer" controls></video>
-            <a id="downloadLink" href="#" download>Download Video</a>
+            <h3>Thumbnail</h3>
+            <img id="thumbnail" alt="Video Thumbnail" class="hidden">
+            <a id="downloadLink" href="#" download class="hidden">Download Video</a>
         </div>
     </div>
     <script src="script.js"></script>
