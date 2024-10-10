@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Downloader</h1>
+        <input type="text" id="videoLink" placeholder="Enter video link" required>
+        <button id="downloadButton">Download Video</button>
+        <div id="result" class="hidden">
+            <h2>Video Player</h2>
+            <video id="videoPlayer" controls></video>
+            <a id="downloadLink" href="#" download>Download Video</a>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
