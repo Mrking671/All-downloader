@@ -13,8 +13,8 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
 
         // Check if the response is OK (status in the range 200-299)
         if (!response.ok) {
-            console.error(`HTTP error! status: ${response.status}`);
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -45,11 +45,11 @@ document.getElementById('downloadButton').addEventListener('click', async () => 
             downloadLink.classList.remove('hidden');
             thumbnail.classList.remove('hidden');
         } else {
-            console.error('API status false:', data);
+            console.error('API response status false:', data);
             alert('Error fetching video. Please check the link and try again.');
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Fetch error:', error);
         alert('An error occurred: ' + error.message);
     }
 });
