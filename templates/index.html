@@ -3,111 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AI Chat Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQdPnuCp8e7PRy25BlfeA7lAXWUPKDwR9FbK8tZlXWp5UJR9jPsk3dvhPp5+c6HnXl0jHkDAc+/NYYd+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
             margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 600px;
             padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
-        #chatbox {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 400px;
+
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+
+        .chat-box {
+            background-color: #f9f9fb;
+            border: 1px solid #e3e3e9;
+            border-radius: 10px;
+            height: 300px;
+            padding: 15px;
             overflow-y: auto;
-            background-color: #fff;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .user, .bot {
-            margin: 5px;
+
+        .chat-box p {
+            margin: 10px 0;
             padding: 10px;
+            background-color: #ececff;
+            border-radius: 8px;
+        }
+
+        .user-message {
+            background-color: #def3f6;
+        }
+
+        .input-group {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
-        .user {
-            background-color: #d1e7dd;
-            text-align: right;
+
+        button {
+            padding: 10px 20px;
+            background-color: #5a67d8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .bot {
-            background-color: #f8d7da;
-            text-align: left;
+
+        button:hover {
+            background-color: #434cdb;
         }
-        #userInput {
-            width: calc(100% - 120px);
-            padding: 10px;
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
         }
-        #sendButton {
-            padding: 10px;
+
+        .footer a {
+            color: #5a67d8;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Smooth animations for responses */
+        .chat-box p {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <h1>AI Chatbot</h1>
-    <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="Type your message here..." />
-    <button id="sendButton">Send</button>
+
+    <div class="container">
+        <h1>AI Chat Assistant</h1>
+        
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        
+        <div class="input-group">
+            <input type="text" id="user-input" placeholder="Ask a question...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <div class="footer">
+            Powered by <a href="https://t.me/teleservices_api" target="_blank">Teleservices API</a>
+        </div>
+    </div>
 
     <script>
-        document.getElementById('sendButton').addEventListener('click', async function () {
-            const userInput = document.getElementById('userInput').value;
-            if (userInput.trim() === "") return; // Prevent sending empty messages
-
-            // Display user message
-            displayMessage(userInput, 'user');
-
-            // Clear input
-            document.getElementById('userInput').value = '';
-
-            // Display loading message
-            const loadingMessage = "Typing...";
-            displayMessage(loadingMessage, 'bot');
-
-            try {
-                // Call the Flask endpoint
-                const response = await fetch(`/chat?question=${encodeURIComponent(userInput)}`);
-
-                // Check if the response is OK (status code 200)
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-
-                // Remove the loading message
-                removeLoadingMessage();
-
-                // Check if the message property exists in the response
-                if (data.message) {
-                    displayMessage(data.message, 'bot');
-                } else {
-                    displayMessage("Sorry, I couldn't get a response.", 'bot');
-                }
-            } catch (error) {
-                // Handle errors
-                console.error('Error:', error);
-                removeLoadingMessage();
-                displayMessage("An error occurred. Please try again later.", 'bot');
+        function addMessage(content, isUser = false) {
+            const chatBox = document.getElementById('chat-box');
+            const message = document.createElement('p');
+            message.textContent = content;
+            if (isUser) {
+                message.classList.add('user-message');
             }
-        });
-
-        // Function to display messages in the chatbox
-        function displayMessage(message, sender) {
-            const chatbox = document.getElementById('chatbox');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = sender;
-            messageDiv.textContent = message;
-            chatbox.appendChild(messageDiv);
-            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
-        // Function to remove loading message
-        function removeLoadingMessage() {
-            const chatbox = document.getElementById('chatbox');
-            const loadingMessages = chatbox.querySelectorAll('.bot');
-            if (loadingMessages.length > 0) {
-                loadingMessages[loadingMessages.length - 1].remove(); // Remove the last bot message (loading)
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const question = userInput.value.trim();
+
+            if (question) {
+                // Add user message to chatbox
+                addMessage(question, true);
+                userInput.value = '';
+
+                try {
+                    // Fetch response from the API
+                    const response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
+                    const data = await response.json();
+
+                    // Add API's response to the chatbox
+                    addMessage(data.message);
+                } catch (error) {
+                    addMessage('Error occurred while fetching the response.');
+                }
             }
         }
     </script>
+    
 </body>
 </html>
