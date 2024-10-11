@@ -13,10 +13,8 @@ document.getElementById('sendButton').addEventListener('click', async function (
     displayMessage(loadingMessage, 'bot');
 
     try {
-        // Call the API using CORS Anywhere
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const targetUrl = `https://telesevapi.vercel.app/chat-gpt?question=${encodeURIComponent(userInput)}`;
-        const response = await fetch(proxyUrl + targetUrl);
+        // Call the local server's endpoint
+        const response = await fetch(`http://localhost:5000/chat?question=${encodeURIComponent(userInput)}`);
 
         // Log the response status for debugging
         console.log('Response Status:', response.status);
