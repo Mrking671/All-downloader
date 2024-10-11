@@ -15,15 +15,15 @@
             height: 100vh; /* Full screen height */
             display: flex;
             flex-direction: column;
-            background: linear-gradient(135deg, #4a90e2, #9013fe); /* Attractive gradient background */
-            color: #ffffff; /* White text */
+            background-color: #f8f8f8; /* Light gray background */
+            color: #333; /* Dark text */
             overflow: hidden; /* Prevent overflow */
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            background: #fff; /* White background */
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             height: 90vh; /* Fill most of the screen */
@@ -35,10 +35,11 @@
             text-align: center;
             margin: 20px 0;
             font-size: 30px; /* Larger font size */
+            color: #333; /* Dark text color */
         }
 
         .chat-box {
-            background-color: rgba(255, 255, 255, 0.2); /* Lighter transparent background */
+            background-color: #f0f0f0; /* Light gray for the chat box */
             border-radius: 10px;
             flex-grow: 1; /* Take available space */
             padding: 15px;
@@ -58,20 +59,20 @@
         }
 
         .user-message {
-            background-color: #4a90e2; /* User message color */
-            color: #ffffff; /* User text color */
+            background-color: #007bff; /* User message color */
+            color: white; /* User text color */
             align-self: flex-end; /* Align user message to the right */
         }
 
         .ai-message {
-            background-color: #333; /* AI message color */
-            color: #ffffff; /* AI text color */
+            background-color: #e9ecef; /* AI message color */
+            color: #333; /* AI text color */
             align-self: flex-start; /* Align AI message to the left */
         }
 
         .typing-indicator {
             font-size: 12px; /* Small font size */
-            color: #bbb; /* Light grey color */
+            color: #888; /* Light grey color */
             position: absolute;
             bottom: -20px; /* Position below the message */
             left: 0;
@@ -83,7 +84,7 @@
         .input-group {
             display: flex;
             padding: 10px; /* Padding around input group */
-            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent input background */
+            background-color: #f0f0f0; /* Light gray input background */
             border-radius: 5px;
             margin: 0 10px; /* Margin on sides */
         }
@@ -91,17 +92,17 @@
         input[type="text"] {
             flex: 1; /* Take available space */
             padding: 12px;
-            border: none; /* No border */
+            border: 1px solid #ccc; /* Gray border */
             border-radius: 5px;
             font-size: 16px;
-            background-color: #fff; /* White input background */
             color: #333; /* Dark text color */
+            background-color: white; /* White input background */
             margin-right: 10px; /* Space between input and button */
         }
 
         button {
             padding: 12px 20px;
-            background-color: #5a67d8; /* Button color */
+            background-color: #007bff; /* Button color */
             color: white;
             border: none;
             border-radius: 5px;
@@ -111,19 +112,19 @@
         }
 
         button:hover {
-            background-color: #434cdb; /* Button hover color */
+            background-color: #0056b3; /* Button hover color */
             transform: scale(1.05); /* Slightly increase button size on hover */
         }
 
         .footer {
             text-align: center;
             margin-top: 10px;
-            color: #bbb; /* Footer text color */
+            color: #555; /* Dark grey for footer text */
             font-size: 14px;
         }
 
         .footer a {
-            color: #5a67d8; /* Footer link color */
+            color: #007bff; /* Footer link color */
             text-decoration: none;
         }
 
