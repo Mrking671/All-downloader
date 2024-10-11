@@ -34,14 +34,18 @@ async function getAIResponse(userMessage) {
     try {
         const response = await fetch(`https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`);
         const data = await response.json();
+        
+        // Log the full response for debugging
+        console.log(data);
 
         if (data.status && data.code === 200) {
             appendMessage('ai', data.gpt);
         } else {
-            appendMessage('ai', 'Sorry, there was an error with the AI response.');
+            appendMessage('ai', 'Error: Invalid response from the AI.');
         }
     } catch (error) {
-        appendMessage('ai', 'Error: Unable to contact the AI.');
+        appendMessage('ai', `Error: ${error.message}`);
+        console.error('Fetch error:', error);
     }
 }
 
