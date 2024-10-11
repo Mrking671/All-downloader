@@ -7,11 +7,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>AI Chat</h1>
-  <div id="chat-container">
-    <input type="text" id="user-message" placeholder="Type your message here..." aria-label="Chat Input">
-    <button id="send-button">Send</button>
-    <div id="chat-history"></div>
+  <div class="chat-app">
+    <header>
+      <h1>AI Chat</h1>
+    </header>
+    <div class="chat-container">
+      <div id="chat-history"></div>
+      <input type="text" id="user-message" placeholder="Type your message here..." aria-label="Chat Input">
+      <button id="send-button">Send</button>
+    </div>
   </div>
   <script src="scripts/chat.js"></script>
 </body>
