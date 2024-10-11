@@ -1,21 +1,26 @@
-const userInputElement = document.getElementById('user-message');
-const sendButton = document.getElementById('send-button');
-const chatHistoryElement = document.getElementById('chat-history');
+document.getElementById('sendButton').addEventListener('click', async function () {
+    const userInput = document.getElementById('userInput').value;
+    if (userInput.trim() === "") return;
 
-sendButton.addEventListener('click', async () => {
-  const userInput = userInputElement.value.trim();
-  if (userInput) {
-    const response = await fetch(`https://telesevapi.vercel.app/chat-gpt?question=${userInput}`);
+    // Display user message
+    displayMessage(userInput, 'user');
+
+    // Clear input
+    document.getElementById('userInput').value = '';
+
+    // Call the API
+    const response = await fetch(`https://telesevapi.vercel.app/chat-gpt?question=${encodeURIComponent(userInput)}`);
     const data = await response.json();
-    const messageElement = document.createElement('p');
-    messageElement.classList.add('chat-message', 'ai');
-    messageElement.textContent = data.message;
-    chatHistoryElement.appendChild(messageElement);
-    userInputElement.value = ''; // Clear input field
-    scrollToBottom();
-  }
+
+    // Display bot response
+    displayMessage(data.message, 'bot');
 });
 
-function scrollToBottom() {
-  chatHistoryElement.scrollTop = chatHistoryElement.scrollHeight;
+function displayMessage(message, sender) {
+    const chatbox = document.getElementById('chatbox');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = sender;
+    messageDiv.textContent = message;
+    chatbox.appendChild(messageDiv);
+    chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
 }
