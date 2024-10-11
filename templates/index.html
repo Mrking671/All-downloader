@@ -13,61 +13,17 @@
             background-color: #1e1e1e;
             color: #ffffff;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: flex-end;
             height: 100vh;
-        }
-
-        .container {
-            text-align: center;
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .logo {
-            margin: 50px 0;
-        }
-
-        .logo img {
-            width: 100px;
-            height: auto;
-        }
-
-        .options {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 50px;
-        }
-
-        .option {
-            background-color: #2d2d2d;
-            border-radius: 12px;
-            padding: 20px;
-            width: 45%;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .option h3 {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #cfcfcf;
-        }
-
-        .option i {
-            font-size: 28px;
-            margin-bottom: 10px;
         }
 
         .input-section {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: fixed;
-            bottom: 10px;
-            left: 0;
-            width: 100%;
             padding: 10px 20px;
+            position: relative;
         }
 
         .input-section input {
@@ -98,32 +54,48 @@
             color: #888;
             font-size: 12px;
         }
+
+        .options {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #2d2d2d;
+        }
+
+        .option {
+            background-color: #3d3d3d;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .option h3 {
+            font-size: 14px;
+            margin: 0;
+            color: #ffffff;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="logo">
-            <!-- Add your logo here -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/OpenAI_Logo.svg/768px-OpenAI_Logo.svg.png" alt="AI Logo">
+    <!-- AI Selection Tabs -->
+    <div class="options">
+        <div class="option">
+            <h3>Option 1</h3>
         </div>
+        <div class="option">
+            <h3>Option 2</h3>
+        </div>
+    </div>
 
-        <div class="options">
-            <div class="option">
-                <i class="fas fa-graduation-cap"></i>
-                <h3>Overcome procrastination</h3>
-            </div>
-            <div class="option">
-                <i class="fas fa-eye"></i>
-                <h3>Count the number of items</h3>
-            </div>
-        </div>
-        
-        <!-- Input section for chat -->
-        <div class="input-section">
-            <input type="text" id="user-input" placeholder="Message AI...">
-            <button><i class="fas fa-paper-plane"></i></button>
-        </div>
+    <!-- Input section for chat -->
+    <div class="input-section">
+        <input type="text" id="user-input" placeholder="Message AI...">
+        <button id="send-button"><i class="fas fa-paper-plane"></i></button>
     </div>
 
     <div class="footer">
@@ -131,5 +103,24 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', async function () {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') {
+                alert('Please enter a message.');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://telesevapi.vercel.app/chat-gpt?question=' + encodeURIComponent(userInput));
+                const data = await response.json();
+
+                alert('AI Response: ' + data.message);  // Replace with actual handling of the response
+            } catch (error) {
+                alert('Error occurred: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>
