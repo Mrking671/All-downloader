@@ -29,10 +29,9 @@ function appendMessage(sender, text) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Function to fetch AI response from the API
+// Function to fetch AI response from the new API
 async function getAIResponse(userMessage) {
-    // Update API URL based on your provided information
-    const apiUrl = `https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`;
+    const apiUrl = `https://telesevapi.vercel.app/chat-gpt?question=${encodeURIComponent(userMessage)}`;
 
     try {
         console.log(`Sending request to: ${apiUrl}`);
@@ -54,8 +53,8 @@ async function getAIResponse(userMessage) {
         console.log('API Response:', data);
 
         // Check for valid response
-        if (data.status && data.code === 200) {
-            appendMessage('ai', data.gpt);
+        if (data.message) {
+            appendMessage('ai', data.message);
         } else {
             appendMessage('ai', 'Error: Invalid response from the AI.');
         }
