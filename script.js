@@ -1,57 +1,53 @@
-document.getElementById('downloadButton').addEventListener('click', async () => {
-    const videoLink = document.getElementById('videoLink').value.trim();
-    
-    // Using a CORS proxy for testing
-    const apiUrl = `https://cors-anywhere.herokuapp.com/https://tele-social.vercel.app/down?url=${encodeURIComponent(videoLink)}`;
+// Selecting the necessary elements
+const chatBox = document.getElementById('chat-box');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
 
-    // Ensure the user has entered a valid video URL
-    if (!videoLink) {
-        alert('Please enter a valid video URL.');
-        return;
+// Event listener for the send button
+sendBtn.addEventListener('click', () => {
+    const message = userInput.value.trim();
+    if (message) {
+        appendMessage('user', message);
+        getAIResponse(message);
+        userInput.value = ''; // Clear input
     }
+});
 
+// Append message to chat box
+function appendMessage(sender, text) {
+    const messageElem = document.createElement('div');
+    messageElem.classList.add('message', sender);
+    
+    const bubbleElem = document.createElement('div');
+    bubbleElem.classList.add('bubble');
+    bubbleElem.textContent = text;
+
+    messageElem.appendChild(bubbleElem);
+    chatBox.appendChild(messageElem);
+
+    // Scroll to the bottom of the chat box
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Function to get AI response from the API
+async function getAIResponse(userMessage) {
     try {
-        const response = await fetch(apiUrl);
-
-        // Check if the response is OK (status in the range 200-299)
-        if (!response.ok) {
-            console.error(`HTTP error! Status: ${response.status}`);
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
+        const response = await fetch(`https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`);
         const data = await response.json();
 
-        // Check if the status in the API response is true
-        if (data.status) {
-            const videoPlayer = document.getElementById('videoPlayer');
-            const downloadLink = document.getElementById('downloadLink');
-            const thumbnail = document.getElementById('thumbnail');
-            const videoSize = document.getElementById('videoSize');
-            const result = document.getElementById('result');
-
-            // Set the video source
-            videoPlayer.src = data.data.video;
-            videoPlayer.load(); // Load the new video source
-
-            // Set the download link
-            downloadLink.href = data.data.video;
-
-            // Set the thumbnail image source
-            thumbnail.src = data.data.image;
-
-            // Display video size
-            videoSize.innerText = `Size: ${data.size}`;
-
-            // Make elements visible
-            result.classList.remove('hidden');
-            downloadLink.classList.remove('hidden');
-            thumbnail.classList.remove('hidden');
+        if (data.status && data.code === 200) {
+            appendMessage('ai', data.gpt);
         } else {
-            console.error('API response status false:', data);
-            alert('Error fetching video. Please check the link and try again.');
+            appendMessage('ai', 'Sorry, there was an error with the AI response.');
         }
     } catch (error) {
-        console.error('Fetch error:', error);
-        alert('An error occurred: ' + error.message);
+        appendMessage('ai', 'Error: Unable to contact the AI.');
+    }
+}
+
+// Allow pressing "Enter" to send a message
+userInput.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        sendBtn.click();
     }
 });
