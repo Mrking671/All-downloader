@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Downloader</title>
+    <meta name="description" content="Interactive AI Chatting Site">
+    <meta name="author" content="Your Name">
+    <title>AI Chatbot</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Video Downloader</h1>
-        <input type="text" id="videoLink" placeholder="Enter video link" required>
-        <button id="downloadButton">Get Video</button>
-        
-        <div id="result" class="hidden">
-            <h2>Video Player</h2>
-            <video id="videoPlayer" controls></video>
-            <h3>Thumbnail</h3>
-            <img id="thumbnail" alt="Video Thumbnail" class="hidden">
-            <p id="videoSize"></p>
-            <a id="downloadLink" href="#" download class="hidden">Download Video</a>
+    <div class="chat-container">
+        <header>
+            <h1>Chat with AI</h1>
+        </header>
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will be dynamically injected here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-btn">Send</button>
         </div>
     </div>
+
+    <footer>
+        <p>Powered by GPT-4 via <a href="https://t.me/Itz_Ashlynn" target="_blank">Ashlynn's API</a></p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
