@@ -44,14 +44,17 @@
             padding: 15px;
             overflow-y: auto; /* Allow scrolling */
             margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Space between messages */
         }
 
-        .chat-box p {
-            margin: 10px 0;
+        .chat-message {
             padding: 10px;
             border-radius: 8px;
             max-width: 75%; /* Limit message width */
             word-wrap: break-word; /* Allow word wrapping */
+            position: relative; /* For typing indicator positioning */
         }
 
         .user-message {
@@ -64,6 +67,17 @@
             background-color: #333; /* AI message color */
             color: #ffffff; /* AI text color */
             align-self: flex-start; /* Align AI message to the left */
+        }
+
+        .typing-indicator {
+            font-size: 12px; /* Small font size */
+            color: #bbb; /* Light grey color */
+            position: absolute;
+            bottom: -20px; /* Position below the message */
+            left: 0;
+            right: 0;
+            text-align: center; /* Center the typing indicator */
+            display: none; /* Hidden by default */
         }
 
         .input-group {
@@ -118,7 +132,7 @@
         }
 
         /* Smooth animations for responses */
-        .chat-box p {
+        .chat-message {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.5s ease forwards;
@@ -154,14 +168,31 @@
     <script>
         function addMessage(content, isUser = false) {
             const chatBox = document.getElementById('chat-box');
-            const message = document.createElement('p');
+            const message = document.createElement('div');
+            message.classList.add('chat-message');
             message.textContent = content;
+
             if (isUser) {
                 message.classList.add('user-message');
             } else {
-                message.classList.add('ai-message'); // Add AI message class
+                message.classList.add('ai-message');
+                // Add typing indicator for AI messages
+                const typingIndicator = document.createElement('div');
+                typingIndicator.classList.add('typing-indicator');
+                typingIndicator.textContent = 'Typing...'; // AI typing indicator
+                message.appendChild(typingIndicator);
+                typingIndicator.style.display = 'block'; // Show typing indicator
+
+                // Simulate typing delay for AI response
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none'; // Hide typing indicator after 1 second
+                    message.textContent = content; // Replace with AI response
+                    message.classList.remove('typing-indicator'); // Remove typing indicator class
+                    chatBox.appendChild(message); // Append AI message to chatbox
+                }, 1000); // 1 second delay
             }
-            chatBox.appendChild(message);
+
+            chatBox.appendChild(message); // Append user message to chatbox
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
