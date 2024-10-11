@@ -31,14 +31,13 @@ function appendMessage(sender, text) {
 
 // Function to fetch AI response from the API
 async function getAIResponse(userMessage) {
+    // Update API URL based on your provided information
     const apiUrl = `https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`;
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Temporary CORS proxy
 
     try {
         console.log(`Sending request to: ${apiUrl}`);
         
-        // Use proxy for testing CORS
-        const response = await fetch(proxyUrl + apiUrl, {
+        const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,6 +45,7 @@ async function getAIResponse(userMessage) {
             }
         });
 
+        // Check if the response is ok
         if (!response.ok) {
             throw new Error(`Server responded with status: ${response.status}`);
         }
