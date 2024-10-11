@@ -19,7 +19,7 @@ function appendMessage(sender, text) {
     messageElem.classList.add('message', sender);
     
     const bubbleElem = document.createElement('div');
-    bubbleElem.classList.add('bubble');
+    bubbleElem.classList.add('bubble', sender);
     bubbleElem.textContent = text;
 
     messageElem.appendChild(bubbleElem);
@@ -32,12 +32,20 @@ function appendMessage(sender, text) {
 // Function to get AI response from the API
 async function getAIResponse(userMessage) {
     try {
-        const response = await fetch(`https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`);
-        const data = await response.json();
-        
-        // Log the full response for debugging
-        console.log(data);
+        const response = await fetch(`https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);  // Log the full response for debugging
+        
         if (data.status && data.code === 200) {
             appendMessage('ai', data.gpt);
         } else {
@@ -45,7 +53,7 @@ async function getAIResponse(userMessage) {
         }
     } catch (error) {
         appendMessage('ai', `Error: ${error.message}`);
-        console.error('Fetch error:', error);
+        console.error('Fetch error:', error);  // Log the error for debugging
     }
 }
 
