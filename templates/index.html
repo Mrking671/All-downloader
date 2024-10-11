@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AI Chat Assistant</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQdPnuCp8e7PRy25BlfeA7lAXWUPKDwR9FbK8tZlXWp5UJR9jPsk3dvhPp5+c6HnXl0jHkDAc+/NYYd+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -15,8 +14,8 @@
             height: 100vh; /* Full screen height */
             display: flex;
             flex-direction: column;
-            background-color: #f8f8f8; /* Light gray background */
-            color: #333; /* Dark text */
+            background-color: #fff; /* White background */
+            color: #000; /* Black text */
             overflow: hidden; /* Prevent overflow */
         }
 
@@ -35,11 +34,11 @@
             text-align: center;
             margin: 20px 0;
             font-size: 30px; /* Larger font size */
-            color: #333; /* Dark text color */
+            color: #000; /* Black text */
         }
 
         .chat-box {
-            background-color: #f0f0f0; /* Light gray for the chat box */
+            background-color: #f8f8f8; /* Light gray for chat box */
             border-radius: 10px;
             flex-grow: 1; /* Take available space */
             padding: 15px;
@@ -56,23 +55,24 @@
             max-width: 75%; /* Limit message width */
             word-wrap: break-word; /* Allow word wrapping */
             position: relative; /* For typing indicator positioning */
+            color: #000; /* Black text for all messages */
         }
 
         .user-message {
-            background-color: #007bff; /* User message color */
-            color: white; /* User text color */
+            background-color: #d9d9d9; /* User message light gray */
+            color: #000; /* Black text for user message */
             align-self: flex-end; /* Align user message to the right */
         }
 
         .ai-message {
-            background-color: #e9ecef; /* AI message color */
-            color: #333; /* AI text color */
+            background-color: #ffffff; /* AI message white */
+            color: #000; /* Black text for AI message */
             align-self: flex-start; /* Align AI message to the left */
         }
 
         .typing-indicator {
             font-size: 12px; /* Small font size */
-            color: #888; /* Light grey color */
+            color: #aaa; /* Light gray for typing indicator */
             position: absolute;
             bottom: -20px; /* Position below the message */
             left: 0;
@@ -95,15 +95,15 @@
             border: 1px solid #ccc; /* Gray border */
             border-radius: 5px;
             font-size: 16px;
-            color: #333; /* Dark text color */
-            background-color: white; /* White input background */
+            color: #000; /* Black text color */
+            background-color: #fff; /* White input background */
             margin-right: 10px; /* Space between input and button */
         }
 
         button {
             padding: 12px 20px;
-            background-color: #007bff; /* Button color */
-            color: white;
+            background-color: #000; /* Black button */
+            color: white; /* White text for button */
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -112,19 +112,19 @@
         }
 
         button:hover {
-            background-color: #0056b3; /* Button hover color */
+            background-color: #555; /* Dark gray on hover */
             transform: scale(1.05); /* Slightly increase button size on hover */
         }
 
         .footer {
             text-align: center;
             margin-top: 10px;
-            color: #555; /* Dark grey for footer text */
+            color: #555; /* Dark gray for footer text */
             font-size: 14px;
         }
 
         .footer a {
-            color: #007bff; /* Footer link color */
+            color: #000; /* Black footer link color */
             text-decoration: none;
         }
 
@@ -175,8 +175,11 @@
 
             if (isUser) {
                 message.classList.add('user-message');
+                chatBox.appendChild(message); // Append user message to chatbox
             } else {
                 message.classList.add('ai-message');
+                chatBox.appendChild(message); // Append AI message to chatbox
+
                 // Add typing indicator for AI messages
                 const typingIndicator = document.createElement('div');
                 typingIndicator.classList.add('typing-indicator');
@@ -189,11 +192,9 @@
                     typingIndicator.style.display = 'none'; // Hide typing indicator after 1 second
                     message.textContent = content; // Replace with AI response
                     message.classList.remove('typing-indicator'); // Remove typing indicator class
-                    chatBox.appendChild(message); // Append AI message to chatbox
                 }, 1000); // 1 second delay
             }
 
-            chatBox.appendChild(message); // Append user message to chatbox
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
@@ -206,17 +207,9 @@
                 addMessage(question, true);
                 userInput.value = '';
 
-                try {
-                    // Fetch response from the API
-                    const response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
-                    const data = await response.json();
-
-                    // Add API's response to the chatbox
-                    addMessage(data.message);
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                    addMessage('Error occurred while fetching the response.');
-                }
+                // Simulate typing delay for AI response
+                const aiMessage = 'This is a simulated AI response.'; // Simulated response for demo purposes
+                addMessage(aiMessage, false); // Call function to add AI message
             }
         }
     </script>
