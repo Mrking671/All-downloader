@@ -16,12 +16,16 @@ document.getElementById('sendButton').addEventListener('click', async function (
         // Call the API
         const response = await fetch(`https://telesevapi.vercel.app/chat-gpt?question=${encodeURIComponent(userInput)}`);
 
+        // Log the response status for debugging
+        console.log('Response Status:', response.status);
+
         // Check if the response is OK (status code 200)
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
 
         const data = await response.json();
+        console.log('Response Data:', data); // Log the response data for debugging
 
         // Remove the loading message
         removeLoadingMessage();
