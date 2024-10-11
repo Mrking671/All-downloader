@@ -207,9 +207,24 @@
                 addMessage(question, true);
                 userInput.value = '';
 
-                // Simulate typing delay for AI response
-                const aiMessage = 'This is a simulated AI response.'; // Simulated response for demo purposes
-                addMessage(aiMessage, false); // Call function to add AI message
+                try {
+                    // Show typing indicator for AI
+                    const aiMessage = 'Typing...'; // Temporary typing message
+                    addMessage(aiMessage, false);
+
+                    // Fetch response from the API
+                    const response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
+                    const data = await response.json();
+
+                    // Replace typing indicator with API response
+                    const aiMessages = document.querySelectorAll('.ai-message');
+                    const lastAiMessage = aiMessages[aiMessages.length - 1];
+                    lastAiMessage.textContent = data.message; // Add the API response
+                } catch (error) {
+                    const aiMessages = document.querySelectorAll('.ai-message');
+                    const lastAiMessage = aiMessages[aiMessages.length - 1];
+                    lastAiMessage.textContent = 'Error occurred while fetching the response.';
+                }
             }
         }
     </script>
