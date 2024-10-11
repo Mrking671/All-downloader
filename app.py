@@ -1,24 +1,35 @@
 from flask import Flask, render_template, request, jsonify
-import requests
+import os
+import requests  # Make sure to import requests
 
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def index():
+    return render_template('index.html')  # Renders the homepage (index.html)
 
-@app.route('/ask', methods=['POST'])
-def ask():
-    user_input = request.json.get('question')
-    if not user_input:
-        return jsonify({"error": "No question provided"}), 400
+@app.route('/chat', methods=['GET'])
+def chat():
+    # Get the 'question' from the query parameters
+    question = request.args.get('question')
+    
+    # Make the request to the external API
+    api_url = f"https://telesevapi.vercel.app/chat-gpt?question={question}"
     
     try:
-        response = requests.get(f'https://telesevapi.vercel.app/chat-gpt?question={user_input}')
-        data = response.json()
-        return jsonify(data)
+        # Call the API and get the response
+        response = requests.get(api_url)
+        response_json = response.json()
+        message = response_json.get("message", "Sorry, no response available.")
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        message = f"Error occurred: {str(e)}"
+    
+    # Return the message as a JSON response
+    return jsonify(message=message)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)  # Ensure you're binding to 0.0.0.0 for Render
+    # Use the PORT environment variable provided by Render
+    port = int(os.environ.get('PORT', 5000))
+    
+    # Run the application on the specified port and bind to 0.0.0.0 to make it accessible externally
+    app.run(host='0.0.0.0', port=port)
