@@ -29,14 +29,15 @@ function appendMessage(sender, text) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Function to fetch AI response from the new API
+// Function to fetch AI response from the API using a CORS proxy
 async function getAIResponse(userMessage) {
     const apiUrl = `https://telesevapi.vercel.app/chat-gpt?question=${encodeURIComponent(userMessage)}`;
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // CORS proxy
 
     try {
-        console.log(`Sending request to: ${apiUrl}`);
+        console.log(`Sending request to: ${proxyUrl}${apiUrl}`);
         
-        const response = await fetch(apiUrl, {
+        const response = await fetch(proxyUrl + apiUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
