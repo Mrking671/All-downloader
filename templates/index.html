@@ -10,8 +10,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #1e1e2f; /* Dark background for modern look */
+            color: #ffffff; /* Text color */
             margin: 0;
             padding: 0;
             display: flex;
@@ -21,39 +21,52 @@
         }
 
         .container {
-            background: white;
+            background: #2a2a38; /* Slightly lighter dark background */
             width: 100%;
             max-width: 600px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 90vh; /* Adjust height to fit the chat box */
         }
 
         h1 {
             text-align: center;
-            color: #4a4a4a;
+            color: #ffffff; /* Title color */
             margin-bottom: 20px;
+            font-size: 24px; /* Title font size */
         }
 
         .chat-box {
-            background-color: #f9f9fb;
-            border: 1px solid #e3e3e9;
+            background-color: #222234; /* Chat box background */
+            border: 1px solid #3d3d4f; /* Border color */
             border-radius: 10px;
-            height: 300px;
+            height: 100%;
             padding: 15px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            flex-grow: 1; /* Allow chat box to grow */
         }
 
         .chat-box p {
             margin: 10px 0;
             padding: 10px;
-            background-color: #ececff;
             border-radius: 8px;
+            max-width: 80%; /* Limit the message width */
+            word-wrap: break-word; /* Wrap long words */
         }
 
         .user-message {
-            background-color: #def3f6;
+            background-color: #4a90e2; /* User message color */
+            align-self: flex-end; /* Align user messages to the right */
+            color: #ffffff; /* User message text color */
+        }
+
+        .ai-message {
+            background-color: #444; /* AI message color */
+            color: #ffffff; /* AI message text color */
         }
 
         .input-group {
@@ -63,15 +76,18 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: none;
             border-radius: 5px;
             font-size: 16px;
+            outline: none;
+            background-color: #3d3d4f; /* Input background */
+            color: #ffffff; /* Input text color */
         }
 
         button {
-            padding: 10px 20px;
-            background-color: #5a67d8;
+            padding: 12px 20px;
+            background-color: #5a67d8; /* Button color */
             color: white;
             border: none;
             border-radius: 5px;
@@ -82,37 +98,23 @@
         }
 
         button:hover {
-            background-color: #434cdb;
+            background-color: #434cdb; /* Darker on hover */
         }
 
         .footer {
             text-align: center;
-            margin-top: 20px;
-            color: #888;
+            margin-top: 10px;
+            color: #888; /* Footer color */
             font-size: 14px;
         }
 
         .footer a {
-            color: #5a67d8;
+            color: #5a67d8; /* Link color */
             text-decoration: none;
         }
 
         .footer a:hover {
             text-decoration: underline;
-        }
-
-        /* Smooth animations for responses */
-        .chat-box p {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
     </style>
 </head>
@@ -142,6 +144,8 @@
             message.textContent = content;
             if (isUser) {
                 message.classList.add('user-message');
+            } else {
+                message.classList.add('ai-message');
             }
             chatBox.appendChild(message);
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
@@ -158,11 +162,22 @@
 
                 try {
                     // Fetch response from the API
-                    const response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
+                    const response = await fetch(`/ask`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ question: question }),
+                    });
+
                     const data = await response.json();
 
                     // Add API's response to the chatbox
-                    addMessage(data.message);
+                    if (data.message) {
+                        addMessage(data.message);
+                    } else {
+                        addMessage('Error: No response from AI.');
+                    }
                 } catch (error) {
                     addMessage('Error occurred while fetching the response.');
                 }
