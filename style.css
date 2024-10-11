@@ -104,3 +104,28 @@ footer a {
     color: #fff;
     text-decoration: underline;
 }
+
+/* Mobile styling */
+@media only screen and (max-width: 600px) {
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    header {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .chat-box {
+        padding: 15px;
+    }
+
+    .chat-input input {
+        padding: 8px;
+    }
+
+    .chat-input button {
+        padding: 8px 15px;
+    }
+}
