@@ -37,8 +37,8 @@ async function getAIResponse(userMessage) {
     try {
         console.log(`Sending request to: ${apiUrl}`);
         
-        // First, try the direct API request
-        let response = await fetch(apiUrl, {
+        // Use proxy for testing CORS
+        const response = await fetch(proxyUrl + apiUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,19 +46,6 @@ async function getAIResponse(userMessage) {
             }
         });
 
-        // If the response is not ok, try using the proxy
-        if (!response.ok) {
-            console.log(`Direct fetch failed with status: ${response.status}. Trying CORS proxy...`);
-            response = await fetch(proxyUrl + apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
-        }
-
-        // Check if the response is ok
         if (!response.ok) {
             throw new Error(`Server responded with status: ${response.status}`);
         }
