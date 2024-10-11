@@ -29,15 +29,14 @@ function appendMessage(sender, text) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Function to fetch AI response from the API (using a CORS proxy)
+// Function to fetch AI response from the API
 async function getAIResponse(userMessage) {
     try {
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Temporary CORS proxy
         const apiUrl = `https://chatgpt.ashlynn.workers.dev/?question=${encodeURIComponent(userMessage)}`;
         
-        console.log(`Sending request to: ${proxyUrl + apiUrl}`);
+        console.log(`Sending request to: ${apiUrl}`);
 
-        const response = await fetch(proxyUrl + apiUrl, {
+        const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,6 +51,7 @@ async function getAIResponse(userMessage) {
         const data = await response.json();
         console.log('API Response:', data);
 
+        // Check for valid response
         if (data.status && data.code === 200) {
             appendMessage('ai', data.gpt);
         } else {
