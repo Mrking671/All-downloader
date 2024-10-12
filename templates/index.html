@@ -200,12 +200,12 @@
                         if (!response.ok) throw new Error('Failed to fetch Horney AI response');
                         data = await response.json();
 
-                        if (data.gpt) {
-                            // Remove typing indicator and add the AI's response
+                        // Check if response contains the expected "gpt" field
+                        if (data && data.gpt) {
                             typingMessage.remove();
-                            addMessage(data.gpt); // Displaying only the 'gpt' field from the response
+                            addMessage(data.gpt); // Add only the 'gpt' response from the API
                         } else {
-                            throw new Error("Invalid response format");
+                            throw new Error('Invalid response format');
                         }
                     } else {
                         // Default AI fetch
