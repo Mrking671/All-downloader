@@ -1,140 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Multi-AI Chat Assistant</title>
+    <title>AI Chat Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
             margin: 0;
             padding: 0;
-            height: 100vh;
             display: flex;
-            flex-direction: column;
-            background-color: #fff;
-            color: #000;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
         }
 
         .container {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background-color: #000000;
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            height: 90vh;
-            margin: auto;
-            overflow: hidden;
         }
 
         h1 {
             text-align: center;
-            margin: 20px 0;
-            font-size: 30px;
-            color: #000;
+            color: #ffffff;
+            margin-bottom: 10px;
         }
 
         .chat-box {
-            background-color: #f8f8f8;
-            border-radius: 10px;
+            background-color: #f4f4f4;
             flex-grow: 1;
-            padding: 15px;
+            border: 1px solid #e3e3e9;
+            border-radius: 10px;
+            padding: 20px;
             overflow-y: auto;
-            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
         }
 
         .chat-message {
+            margin: 10px 0;
             padding: 10px;
             border-radius: 8px;
-            max-width: 75%;
-            word-wrap: break-word;
-            position: relative;
-            color: #000;
+            max-width: 70%;
         }
 
         .user-message {
-            background-color: #d9d9d9;
-            color: #000;
             align-self: flex-end;
+            background-color: #000000;
+            color: #ffffff;
         }
 
         .ai-message {
-            background-color: #ffffff;
-            color: #000;
             align-self: flex-start;
-        }
-
-        .typing-indicator {
-            font-size: 12px;
-            color: #aaa;
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            display: none;
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
         }
 
         .input-group {
             display: flex;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            margin: 0 10px;
+            margin-top: 10px;
         }
 
         input[type="text"] {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #000000;
             border-radius: 5px;
             font-size: 16px;
-            color: #000;
-            background-color: #fff;
-            margin-right: 10px;
+            background-color: #ffffff;
+            color: #000000;
         }
 
         button {
-            padding: 12px 20px;
-            background-color: #000;
-            color: white;
+            padding: 15px 20px;
+            background-color: #000000;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
+            margin-left: 10px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
         }
 
         button:hover {
-            background-color: #555;
-            transform: scale(1.05);
-        }
-
-        select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            color: #000;
-            background-color: #fff;
-            margin-right: 10px;
+            background-color: #333333;
         }
 
         .footer {
             text-align: center;
             margin-top: 10px;
-            color: #555;
+            color: #888888;
             font-size: 14px;
         }
 
         .footer a {
-            color: #000;
+            color: #000000;
             text-decoration: none;
         }
 
@@ -142,26 +115,31 @@
             text-decoration: underline;
         }
 
-        .chat-message {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
+        .typing-indicator {
+            font-size: 12px;
+            color: #888888;
+            font-style: italic;
+            opacity: 0.7;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        #ai-selection {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
+            width: 100%;
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
         <h1>AI Chat Assistant</h1>
-        
-        <!-- AI selection dropdown -->
+
         <select id="ai-selection">
             <option value="default">Default AI</option>
             <option value="horney">Horney AI</option>
@@ -170,9 +148,9 @@
         <div class="chat-box" id="chat-box">
             <!-- Chat messages will appear here -->
         </div>
-        
+
         <div class="input-group">
-            <input type="text" id="user-input" placeholder="Ask a question...">
+            <input type="text" id="user-input" placeholder="Ask a question..." />
             <button onclick="sendMessage()">Send</button>
         </div>
 
@@ -190,25 +168,12 @@
 
             if (isUser) {
                 message.classList.add('user-message');
-                chatBox.appendChild(message);
             } else {
                 message.classList.add('ai-message');
-                chatBox.appendChild(message);
-
-                const typingIndicator = document.createElement('div');
-                typingIndicator.classList.add('typing-indicator');
-                typingIndicator.textContent = 'Typing...';
-                message.appendChild(typingIndicator);
-                typingIndicator.style.display = 'block';
-
-                setTimeout(() => {
-                    typingIndicator.style.display = 'none';
-                    message.textContent = content;
-                    message.classList.remove('typing-indicator');
-                }, 1000);
             }
 
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
         async function sendMessage() {
@@ -217,34 +182,51 @@
             const selectedAI = document.getElementById('ai-selection').value;
 
             if (question) {
-                addMessage(question, true);
+                addMessage(question, true); // Show user's message
                 userInput.value = '';
 
-                try {
-                    addMessage('Typing...', false);
+                // Show typing indicator
+                const typingMessage = document.createElement('div');
+                typingMessage.classList.add('chat-message', 'ai-message', 'typing-indicator');
+                typingMessage.textContent = 'Typing...';
+                document.getElementById('chat-box').appendChild(typingMessage);
 
+                try {
                     let response, data;
-                    
+
                     if (selectedAI === 'horney') {
-                        // Use the Horney AI API
+                        // Horney AI fetch
                         response = await fetch(`https://evil.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&model=horny`);
                         data = await response.json();
-                        addMessage(data.gpt); // Get the response from the "gpt" field
+
+                        if (response.ok && data.gpt) {
+                            // Remove typing indicator and add the AI's response
+                            typingMessage.remove();
+                            addMessage(data.gpt); // Displaying only the 'gpt' field from the response
+                        } else {
+                            throw new Error("Invalid response format or API issue");
+                        }
                     } else {
-                        // Default AI (replace with your own API endpoint)
+                        // Default AI fetch
                         response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
                         data = await response.json();
-                        addMessage(data.message); // Assuming "message" is the field for other AIs
+
+                        if (response.ok && data.message) {
+                            typingMessage.remove();
+                            addMessage(data.message); // Displaying the default AI response
+                        } else {
+                            throw new Error("Invalid response format or API issue");
+                        }
                     }
-                    
                 } catch (error) {
-                    const aiMessages = document.querySelectorAll('.ai-message');
-                    const lastAiMessage = aiMessages[aiMessages.length - 1];
-                    lastAiMessage.textContent = 'Error occurred while fetching the response.';
+                    console.error("Error fetching response:", error);
+                    typingMessage.remove();
+                    addMessage('Error occurred while fetching the response.');
                 }
             }
         }
     </script>
-    
+
 </body>
+
 </html>
