@@ -197,25 +197,27 @@
                     if (selectedAI === 'horney') {
                         // Horney AI fetch
                         response = await fetch(`https://evil.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&model=horny`);
+                        if (!response.ok) throw new Error('Failed to fetch Horney AI response');
                         data = await response.json();
 
-                        if (response.ok && data.gpt) {
+                        if (data.gpt) {
                             // Remove typing indicator and add the AI's response
                             typingMessage.remove();
                             addMessage(data.gpt); // Displaying only the 'gpt' field from the response
                         } else {
-                            throw new Error("Invalid response format or API issue");
+                            throw new Error("Invalid response format");
                         }
                     } else {
                         // Default AI fetch
                         response = await fetch(`/chat?question=${encodeURIComponent(question)}`);
+                        if (!response.ok) throw new Error('Failed to fetch Default AI response');
                         data = await response.json();
 
-                        if (response.ok && data.message) {
+                        if (data.message) {
                             typingMessage.remove();
                             addMessage(data.message); // Displaying the default AI response
                         } else {
-                            throw new Error("Invalid response format or API issue");
+                            throw new Error("Invalid response format");
                         }
                     }
                 } catch (error) {
