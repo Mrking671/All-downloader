@@ -195,8 +195,12 @@
                     let response, data;
 
                     if (selectedAI === 'horney') {
-                        // Horney AI fetch
-                        response = await fetch(`https://evil.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&model=horny`);
+                        // Use proxy for Horney AI
+                        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+                        const apiUrl = `https://evil.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&model=horny`;
+
+                        // Horney AI fetch using proxy
+                        response = await fetch(proxyUrl + apiUrl);
                         if (!response.ok) throw new Error('Failed to fetch Horney AI response');
                         data = await response.json();
 
